@@ -2,5 +2,4 @@ Flask
 numpy
 Pillow
 tensorflow
-util-linux; platform_system=="Linux"
 gunicorn
