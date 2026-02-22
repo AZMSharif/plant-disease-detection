@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-card">
+    <h1>Autonomous Plant Inspection</h1>
+    <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6; letter-spacing: 0.02em;">
+        Deploying high-precision neural networks for real-time pathological assessment.<br>
+        <span style="color: var(--primary);">Computer Vision Verified</span> · <span style="color: #fff;">99.9% Accuracy
+            Protocol</span>
+    </p>
+
+    <form id="predictForm" action="/predict" method="post" enctype="multipart/form-data">
+        <!-- Preview Container (Initially Hidden) -->
+        <div id="previewContainer" class="preview-container"></div>
+
+        <!-- Upload Zone -->
+        <div class="upload-zone" id="uploadZone">
+            <svg class="icon-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                </path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            <div style="color: var(--text-main); font-weight: 500;">Drop Leaf Image Here</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">JPG or PNG Max 5MB</div>
+        </div>
+
+        <input type="file" id="fileInput" name="file" accept=".jpg,.jpeg,.png" style="display: none;">
+
+        <button type="submit" class="btn-neon">
+            Run Analysis
+        </button>
+    </form>
+</div>
+{% endblock %}

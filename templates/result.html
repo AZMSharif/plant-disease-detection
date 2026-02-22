@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-card">
+    <div style="margin-bottom: 2rem;">
+        <!-- Input Image Display -->
+        <div
+            style="position: relative; width: 100%; max-width: 400px; height: 300px; margin: 0 auto 2rem auto; border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+            <!-- Scan Overlay and Grid -->
+            <div
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,255,157,0.1) 0%, transparent 100%); pointer-events: none; z-index: 2;">
+            </div>
+            <div
+                style="position: absolute; top: 10px; left: 10px; font-size: 0.7rem; color: var(--primary); letter-spacing: 2px; z-index: 3; background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 4px;">
+                SOURCE: UPLOAD_01</div>
+
+            <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Analyzed Leaf"
+                style="width: 100%; height: 100%; object-fit: cover;">
+
+            <!-- Corner Accents -->
+            <div
+                style="position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--primary); box-shadow: 0 0 15px var(--primary);">
+            </div>
+        </div>
+
+        <h2 style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;">
+            Identification Result</h2>
+        <h1 style="font-size: 3.5rem; text-shadow: 0 0 20px var(--primary-dim);">{{ label }}</h1>
+        <p style="color: var(--text-main); font-size: 1.1rem; opacity: 0.9;">
+            {% if label == 'Healthy' %}
+            No pathogens detected in the sample.
+            {% else %}
+            Positive identification of {{ label }}.
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="stat-box">
+        <div class="stat-val">{{ confidence }}%</div>
+        <div class="stat-lbl">Confidence Score</div>
+    </div>
+
+    <a href="/" class="btn-neon" style="display: inline-block; margin-top: 2rem;">Scan Next Sample</a>
+</div>
+{% endblock %}
