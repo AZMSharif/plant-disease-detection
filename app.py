@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import numpy as np
 import numpy as np
 from PIL import Image
-import tflite_runtime.interpreter as tflite
+import tensorflow.lite as tflite
 import PIL
 
 # Initialize Flask app
