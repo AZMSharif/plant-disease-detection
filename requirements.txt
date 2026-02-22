@@ -1,5 +1,5 @@
 Flask
 numpy
 Pillow
-tensorflow
+tflite-runtime
 gunicorn

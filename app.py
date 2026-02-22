@@ -2,8 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 from werkzeug.utils import secure_filename
 import numpy as np
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
+import numpy as np
+from PIL import Image
+import tflite_runtime.interpreter as tflite
 import PIL
 
 # Initialize Flask app
@@ -16,8 +17,13 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-# Load the trained model
-model = load_model('model.h5')  # Ensure the model file is in the same directory or provide the correct path
+# Load the TFLite model and allocate tensors.
+interpreter = tflite.Interpreter(model_path="model.tflite")
+interpreter.allocate_tensors()
+
+# Get input and output tensors details
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
 
 # Class labels (adjust according to your dataset)
 labels = {0: "Healthy", 1: "Powdery Mildew", 2: "Rust"}
@@ -50,13 +56,16 @@ def predict():
         file.save(filepath)
 
         # Preprocess the image
-        img = image.load_img(filepath, target_size=(224, 224))  # Resize the image
-        img_array = image.img_to_array(img)
+        img = Image.open(filepath).resize((224, 224))  # Resize the image
+        img_array = np.array(img)
         img_array = np.expand_dims(img_array, axis=0)
         img_array = img_array.astype('float32') / 255.0  # Normalize
 
-        # Make a prediction
-        predictions = model.predict(img_array)
+        # Make a prediction using TFLite
+        interpreter.set_tensor(input_details[0]['index'], img_array)
+        interpreter.invoke()
+        predictions = interpreter.get_tensor(output_details[0]['index'])
+        
         predicted_label = np.argmax(predictions)
         confidence = np.max(predictions) * 100
 
